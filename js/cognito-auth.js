@@ -160,6 +160,24 @@ var WildRydes = window.WildRydes || {};
         event.preventDefault();
         verify(email, code,
             function verifySuccess(result) {
+                $.ajax({
+                    method: 'POST',
+                    url: _config.api.invokeUrl + '/user',
+                    headers: {
+                        Authorization: authToken
+                    },
+                    data: JSON.stringify({
+                        Token: authToken
+                    }),
+                    contentType: 'application/json',
+                    success: completeRequest,
+                    error: function ajaxError(jqXHR, textStatus, errorThrown) {
+                        console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
+                        console.error('Response: ', jqXHR.responseText);
+                        alert('An error occured when requesting your unicorn:\n' + jqXHR.responseText);
+                    }
+                });
+
                 console.log('call result: ' + result);
                 console.log('Successfully verified');
                 alert('Verification successful. You will now be redirected to the login page.');
