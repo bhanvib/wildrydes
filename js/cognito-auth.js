@@ -164,10 +164,10 @@ var WildRydes = window.WildRydes || {};
                     method: 'POST',
                     url: _config.api.invokeUrl + '/user',
                     headers: {
-                        Authorization: authToken
+                        Authorization: WildRydes.authToken
                     },
                     data: JSON.stringify({
-                        Token: authToken
+                        Token: WildRydes.authToken
                     }),
                     contentType: 'application/json',
                     success: completeRequest,
