@@ -160,6 +160,10 @@ var WildRydes = window.WildRydes || {};
         event.preventDefault();
         verify(email, code,
             function verifySuccess(result) {
+                console.log('call result: ' + result);
+                console.log('Successfully verified');
+                alert('Verification successful. You will now be redirected to the login page.');
+
                 $.ajax({
                     method: 'POST',
                     url: _config.api.invokeUrl + '/user',
@@ -170,22 +174,21 @@ var WildRydes = window.WildRydes || {};
                         Token: WildRydes.authToken
                     }),
                     contentType: 'application/json',
-                    success: completeRequest,
+                    success: routeToLogin,
                     error: function ajaxError(jqXHR, textStatus, errorThrown) {
                         console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
                         console.error('Response: ', jqXHR.responseText);
-                        alert('An error occured when requesting your unicorn:\n' + jqXHR.responseText);
                     }
                 });
 
-                console.log('call result: ' + result);
-                console.log('Successfully verified');
-                alert('Verification successful. You will now be redirected to the login page.');
-                window.location.href = signinUrl;
             },
             function verifyError(err) {
                 alert(err);
             }
         );
+    }
+
+    function routeToLogin(event) {
+        window.location.href = signinUrl;
     }
 }(jQuery));
