@@ -188,7 +188,7 @@ var WildRydes = window.WildRydes || {};
         );
     }
 
-    function routeToLogin(response) {
+    function routeToLogin(result) {
         console.log('Response received from API: ', result);
         window.location.href = signinUrl;
     }
