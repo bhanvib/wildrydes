@@ -168,7 +168,6 @@ var WildRydes = window.WildRydes || {};
                     method: 'POST',
                     url: _config.api.invokeUrl + '/user',
                     headers: {
-                        "Access-Control-Allow-Origin": "*",
                         Authorization: WildRydes.authToken
                     },
                     data: JSON.stringify({
