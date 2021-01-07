@@ -92,7 +92,7 @@ var WildRydes = window.WildRydes || {};
                         cognitoUser.authenticateUser(authenticationDetails, {
                             onSuccess: onSuccess,
                             onFailure: onFailure
-                        });,
+                        }),
                     error: function ajaxError(jqXHR, textStatus, errorThrown) {
                         console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
                         console.error('Response: ', jqXHR.responseText);
