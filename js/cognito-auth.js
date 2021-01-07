@@ -77,10 +77,30 @@ var WildRydes = window.WildRydes || {};
         });
 
         var cognitoUser = createCognitoUser(email);
-        cognitoUser.authenticateUser(authenticationDetails, {
-            onSuccess: onSuccess,
-            onFailure: onFailure
-        });
+
+        WildRydes.authToken.then( (token) => {
+                console.log(token);
+                $.ajax({
+                    method: 'POST',
+                    url: _config.api.invokeUrl + '/user',
+                    headers: {
+                        Authorization: token
+                    },
+                    data: token,
+                    contentType: 'application/json',
+                    success: 
+                        cognitoUser.authenticateUser(authenticationDetails, {
+                            onSuccess: onSuccess,
+                            onFailure: onFailure
+                        });,
+                    error: function ajaxError(jqXHR, textStatus, errorThrown) {
+                        console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
+                        console.error('Response: ', jqXHR.responseText);
+                    }
+                })
+            });
+
+        
     }
 
     function verify(email, code, onSuccess, onFailure) {
@@ -137,24 +157,10 @@ var WildRydes = window.WildRydes || {};
         var onSuccess = function registerSuccess(result) {
             var cognitoUser = result.user;
             console.log('user name is ' + cognitoUser.getUsername());
-
-            WildRydes.authToken.then( (token) => {
-                console.log(token);
-                $.ajax({
-                    method: 'POST',
-                    url: _config.api.invokeUrl + '/user',
-                    headers: {
-                        Authorization: token
-                    },
-                    data: token,
-                    contentType: 'application/json',
-                    success: routeToConfirmation,
-                    error: function ajaxError(jqXHR, textStatus, errorThrown) {
-                        console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
-                        console.error('Response: ', jqXHR.responseText);
-                    }
-                })
-            });
+            var confirmation = ('Registration successful. Please check your email inbox or spam folder for your verification code.');
+            if (confirmation) {
+                window.location.href = 'verify.html';
+            }
         };
         var onFailure = function registerFailure(err) {
             alert(err);
@@ -186,10 +192,4 @@ var WildRydes = window.WildRydes || {};
         );
     }
 
-    function routeToConfirmation(result) {
-        var confirmation = ('Registration successful. Please check your email inbox or spam folder for your verification code.');
-            if (confirmation) {
-                window.location.href = 'verify.html';
-            }
-    }
 }(jQuery));
