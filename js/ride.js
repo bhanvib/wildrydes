@@ -30,7 +30,7 @@ WildRydes.map = WildRydes.map || {};
             console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
             console.error('Response: ', jqXHR.responseText);
         }
-    })
+    });
 
     function requestUnicorn(pickupLocation) {
         $.ajax({
