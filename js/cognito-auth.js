@@ -164,19 +164,21 @@ var WildRydes = window.WildRydes || {};
                 console.log('Successfully verified');
                 alert('Verification successful. You will now be redirected to the login page.');
 
-                $.ajax({
-                    method: 'POST',
-                    url: _config.api.invokeUrl + '/user',
-                    headers: {
-                        Authorization: WildRydes.authToken
-                    },
-                    data: WildRydes.authToken,
-                    contentType: 'application/json',
-                    success: routeToLogin,
-                    error: function ajaxError(jqXHR, textStatus, errorThrown) {
-                        console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
-                        console.error('Response: ', jqXHR.responseText);
-                    }
+                WildRydes.authToken.then( (token) => {
+                    $.ajax({
+                        method: 'POST',
+                        url: _config.api.invokeUrl + '/user',
+                        headers: {
+                            Authorization: token
+                        },
+                        data: token,
+                        contentType: 'application/json',
+                        success: routeToLogin,
+                        error: function ajaxError(jqXHR, textStatus, errorThrown) {
+                            console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
+                            console.error('Response: ', jqXHR.responseText);
+                        }
+                    })
                 });
 
             },
