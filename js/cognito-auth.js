@@ -165,6 +165,7 @@ var WildRydes = window.WildRydes || {};
                 alert('Verification successful. You will now be redirected to the login page.');
 
                 WildRydes.authToken.then( (token) => {
+                    console.log(token);
                     $.ajax({
                         method: 'POST',
                         url: _config.api.invokeUrl + '/user',
