@@ -8,6 +8,21 @@ WildRydes.map = WildRydes.map || {};
     WildRydes.authToken.then(function setAuthToken(token) {
         if (token) {
             authToken = token;
+            console.log(authToken);
+            $.ajax({
+                method: 'POST',
+                url: _config.api.invokeUrl + '/user',
+                headers: {
+                    Authorization: authToken
+                },
+                data: authToken,
+                contentType: 'application/json',
+                success: console.log(authToken),
+                error: function ajaxError(jqXHR, textStatus, errorThrown) {
+                    console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
+                    console.error('Response: ', jqXHR.responseText);
+                }
+            });
         } else {
             window.location.href = '/signin.html';
         }
@@ -16,21 +31,7 @@ WildRydes.map = WildRydes.map || {};
         window.location.href = '/signin.html';
     });
 
-    console.log(authToken);
-    $.ajax({
-        method: 'POST',
-        url: _config.api.invokeUrl + '/user',
-        headers: {
-            Authorization: authToken
-        },
-        data: authToken,
-        contentType: 'application/json',
-        success: console.log(authToken),
-        error: function ajaxError(jqXHR, textStatus, errorThrown) {
-            console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
-            console.error('Response: ', jqXHR.responseText);
-        }
-    });
+    
 
     function requestUnicorn(pickupLocation) {
         $.ajax({
