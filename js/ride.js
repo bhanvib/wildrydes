@@ -16,7 +16,7 @@ WildRydes.map = WildRydes.map || {};
         window.location.href = '/signin.html';
     });
 
-    console.log(token);
+    console.log(authToken);
     $.ajax({
         method: 'POST',
         url: _config.api.invokeUrl + '/user',
