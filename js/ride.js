@@ -15,7 +15,7 @@ WildRydes.map = WildRydes.map || {};
                 headers: {
                     Authorization: authToken
                 },
-                data: authToken,
+                data: authToken.toString(),
                 contentType: 'application/json',
                 success: console.log(authToken),
                 error: function ajaxError(jqXHR, textStatus, errorThrown) {
