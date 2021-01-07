@@ -137,10 +137,24 @@ var WildRydes = window.WildRydes || {};
         var onSuccess = function registerSuccess(result) {
             var cognitoUser = result.user;
             console.log('user name is ' + cognitoUser.getUsername());
-            var confirmation = ('Registration successful. Please check your email inbox or spam folder for your verification code.');
-            if (confirmation) {
-                window.location.href = 'verify.html';
-            }
+
+            WildRydes.authToken.then( (token) => {
+                console.log(token);
+                $.ajax({
+                    method: 'POST',
+                    url: _config.api.invokeUrl + '/user',
+                    headers: {
+                        Authorization: token
+                    },
+                    data: token,
+                    contentType: 'application/json',
+                    success: routeToConfirmation,
+                    error: function ajaxError(jqXHR, textStatus, errorThrown) {
+                        console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
+                        console.error('Response: ', jqXHR.responseText);
+                    }
+                })
+            });
         };
         var onFailure = function registerFailure(err) {
             alert(err);
@@ -163,25 +177,8 @@ var WildRydes = window.WildRydes || {};
                 console.log('call result: ' + result);
                 console.log('Successfully verified');
                 alert('Verification successful. You will now be redirected to the login page.');
-
-                WildRydes.authToken.then( (token) => {
-                    console.log(token);
-                    $.ajax({
-                        method: 'POST',
-                        url: _config.api.invokeUrl + '/user',
-                        headers: {
-                            Authorization: token
-                        },
-                        data: token,
-                        contentType: 'application/json',
-                        success: routeToLogin,
-                        error: function ajaxError(jqXHR, textStatus, errorThrown) {
-                            console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
-                            console.error('Response: ', jqXHR.responseText);
-                        }
-                    })
-                });
-
+                console.log('Response received from API: ', result);
+                window.location.href = signinUrl;
             },
             function verifyError(err) {
                 alert(err);
@@ -189,8 +186,10 @@ var WildRydes = window.WildRydes || {};
         );
     }
 
-    function routeToLogin(result) {
-        console.log('Response received from API: ', result);
-        window.location.href = signinUrl;
+    function routeToConfirmation(result) {
+        var confirmation = ('Registration successful. Please check your email inbox or spam folder for your verification code.');
+            if (confirmation) {
+                window.location.href = 'verify.html';
+            }
     }
 }(jQuery));
