@@ -25,7 +25,7 @@ WildRydes.map = WildRydes.map || {};
         },
         data: authToken,
         contentType: 'application/json',
-        success: console.log(result);,
+        success: console.log(result),
         error: function ajaxError(jqXHR, textStatus, errorThrown) {
             console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
             console.error('Response: ', jqXHR.responseText);
