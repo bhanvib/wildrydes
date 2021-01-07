@@ -78,29 +78,10 @@ var WildRydes = window.WildRydes || {};
 
         var cognitoUser = createCognitoUser(email);
 
-        WildRydes.authToken.then( (token) => {
-                console.log(token);
-                $.ajax({
-                    method: 'POST',
-                    url: _config.api.invokeUrl + '/user',
-                    headers: {
-                        Authorization: token
-                    },
-                    data: token,
-                    contentType: 'application/json',
-                    success: 
-                        cognitoUser.authenticateUser(authenticationDetails, {
-                            onSuccess: onSuccess,
-                            onFailure: onFailure
-                        }),
-                    error: function ajaxError(jqXHR, textStatus, errorThrown) {
-                        console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
-                        console.error('Response: ', jqXHR.responseText);
-                    }
-                })
-            });
-
-        
+        cognitoUser.authenticateUser(authenticationDetails, {
+            onSuccess: onSuccess,
+            onFailure: onFailure
+        });
     }
 
     function verify(email, code, onSuccess, onFailure) {
