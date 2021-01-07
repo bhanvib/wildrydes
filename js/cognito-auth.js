@@ -170,9 +170,7 @@ var WildRydes = window.WildRydes || {};
                     headers: {
                         Authorization: WildRydes.authToken
                     },
-                    data: JSON.stringify({
-                        Token: WildRydes.authToken
-                    }),
+                    data: WildRydes.authToken,
                     contentType: 'application/json',
                     success: routeToLogin,
                     error: function ajaxError(jqXHR, textStatus, errorThrown) {
